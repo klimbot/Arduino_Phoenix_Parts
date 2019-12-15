@@ -24,23 +24,23 @@ jobs:
           - 1.8.10
         sketch:
           - Phoenix/AliPhoenix_PS2_Maestro/AliPhoenix_PS2_Maestro.ino
-          - Phoenix/AliPhoenix_PS3_Maestro_M5StickC/AliPhoenix_PS3_Maestro_M5StickC.ino
-          - Phoenix/AliPhoenix_Serial_Maestro/AliPhoenix_Serial_Maestro.ino
-          - Phoenix/Chr3_Commander_SSC32/Chr3_Commander_SSC32.ino
-          - Phoenix/Chr3_PS2_Orion/Chr3_PS2_Orion.ino
-          - Phoenix/Chr3_PS2_ServoEx/Chr3_PS2_ServoEx.ino
-          - Phoenix/Chr3_RC_SSC32/Chr3_RC_SSC32.ino
-          - Phoenix/LSQuadA_PS2_SSC32/LSQuadA_PS2_SSC32.ino
-          - Phoenix/Mantis_BMPS2_Orion_Stock/Mantis_BMPS2_Orion_Stock.ino
-          - Phoenix/PhantomX_Commander_AX12/PhantomX_Commander_AX12.ino
-          - Phoenix/PhantomX_Commander_AX12_Stock/PhantomX_Commander_AX12_Stock.ino
-          - Phoenix/PhantomX_DIYXbee_AX12/PhantomX_DIYXbee_AX12.ino
-          - Phoenix/PhantomX_V2_Commander_AX12_Stock/PhantomX_V2_Commander_AX12_Stock.ino
-          - Phoenix/Phoenix_PS2_SSC32/Phoenix_PS2_SSC32.ino
-          - Phoenix/PhXQuadV2_Commander_AX12_Stock/PhXQuadV2_Commander_AX12_Stock.ino
-          - Phoenix/THex_PS2_SSC32/THex_PS2_SSC32.ino
-          - Phoenix/THex_Serial_SSC32/THex_Serial_SSC32.ino
-          - Phoenix/THex4_PS2_SSC32/THex4_PS2_SSC32.ino
+          # - Phoenix/AliPhoenix_PS3_Maestro_M5StickC/AliPhoenix_PS3_Maestro_M5StickC.ino
+          # - Phoenix/AliPhoenix_Serial_Maestro/AliPhoenix_Serial_Maestro.ino
+          # - Phoenix/Chr3_Commander_SSC32/Chr3_Commander_SSC32.ino
+          # - Phoenix/Chr3_PS2_Orion/Chr3_PS2_Orion.ino
+          # - Phoenix/Chr3_PS2_ServoEx/Chr3_PS2_ServoEx.ino
+          # - Phoenix/Chr3_RC_SSC32/Chr3_RC_SSC32.ino
+          # - Phoenix/LSQuadA_PS2_SSC32/LSQuadA_PS2_SSC32.ino
+          # - Phoenix/Mantis_BMPS2_Orion_Stock/Mantis_BMPS2_Orion_Stock.ino
+          # - Phoenix/PhantomX_Commander_AX12/PhantomX_Commander_AX12.ino
+          # - Phoenix/PhantomX_Commander_AX12_Stock/PhantomX_Commander_AX12_Stock.ino
+          # - Phoenix/PhantomX_DIYXbee_AX12/PhantomX_DIYXbee_AX12.ino
+          # - Phoenix/PhantomX_V2_Commander_AX12_Stock/PhantomX_V2_Commander_AX12_Stock.ino
+          # - Phoenix/Phoenix_PS2_SSC32/Phoenix_PS2_SSC32.ino
+          # - Phoenix/PhXQuadV2_Commander_AX12_Stock/PhXQuadV2_Commander_AX12_Stock.ino
+          # - Phoenix/THex_PS2_SSC32/THex_PS2_SSC32.ino
+          # - Phoenix/THex_Serial_SSC32/THex_Serial_SSC32.ino
+          # - Phoenix/THex4_PS2_SSC32/THex4_PS2_SSC32.ino
         board:
           - esp32:esp32:m5stick-c
           - arduino:avr:leonardo
@@ -86,6 +86,7 @@ jobs:
         git clone --branch arduino-1-6 https://github.com/KurtE/arbotix.git
         mv arbotix/libraries/* .
         rm -rf arbotix/
+        ls -la
       shell: bash
     - name: Compile project
       run: |
