@@ -46,8 +46,18 @@
 
 #define cEyesPin 13
 
-#if defined(UBRR1H)
+#define USE_MAESTRO
+#define cMAESTRO_BAUD         115200   //MAESTRO BAUD rate
+#define cMAESTRO_OUT 0        //GPIO36 - Output pin for (MAESTRO RX)
+#define cMAESTRO_IN  26       //GPIO26 - Input pin for (MAESTRO TX)
+
+// Serial connection settings for debugging and connection to Maestro servo controller
+#ifdef UBRR1H
 #define MAESTROSerial         Serial1
+#elif defined(ESP32)
+#define min _min
+#define max _max
+#define MAESTROSerial         Serial2
 #else
 SoftwareSerial MAESTROSerial(cMAESTRO_IN, cMAESTRO_OUT);
 #endif
@@ -87,12 +97,7 @@ SoftwareSerial SerSerial(10, 11);
 //==================================================================================================================================
 // AliPhoenix
 //==================================================================================================================================
-#define USE_MAESTRO
 
-// Warning I will undefine some components as the non-megas don't have enough memory...
-//#undef OPT_FIND_SERVO_OFFSETS 
-
-#define cMAESTRO_BAUD         115200   //MAESTRO BAUD rate
 
 //--------------------------------------------------------------------
 //[Botboarduino Pin Numbers]
@@ -100,8 +105,6 @@ SoftwareSerial SerSerial(10, 11);
 
 #define cSSC_OUT         12      	//Output pin for (SSC RX) on BotBoard (Yellow)
 #define cSSC_IN          13      	//Input pin for (SSC TX) on BotBoard (Blue)
-#define cMAESTRO_OUT     12        //Output pin for (MAESTRO RX)
-#define cMAESTRO_IN      13       //Input pin for (MAESTRO TX)
 
 //====================================================================
 //[MAESTRO PIN NUMBERS]
@@ -314,4 +317,3 @@ extern const byte g_abHexMaxBodyY[] PROGMEM;
 #define cTarsFactorC	50	//4DOF ONLY
 
 #endif CFG_HEX_H
-
