@@ -18,7 +18,11 @@
  */
 
 #include "BioloidEx.h"
-#include <avr/pgmspace.h>
+#ifdef ESP32
+  #include <pgmspace.h>
+#elif __AVR__
+  #include <avr/pgmspace.h>
+#endif
 
 /* initializes serial1 transmit at baud, 8-N-1 */
 BioloidControllerEx::BioloidControllerEx(long baud){

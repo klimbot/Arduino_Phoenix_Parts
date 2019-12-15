@@ -81,10 +81,11 @@ jobs:
         git clone https://github.com/plerup/espsoftwareserial.git arduino-${{ matrix.arduino }}/libraries/espsoftwareserial
         git clone --branch develop https://github.com/jvpernis/esp32-ps3.git arduino-${{ matrix.arduino }}/libraries/esp32-ps3
         git clone https://github.com/madsci1016/Arduino-PS2X.git
-        mv Arduino-PS2X/* .
+        mv Arduino-PS2X/PS2X_lib/ .
         rm -r Arduino-PS2X
         git clone --branch arduino-1-6 https://github.com/KurtE/arbotix.git
         mv arbotix/libraries/* .
+        rm -rf arbotix/
       shell: bash
     - name: Compile project
       run: |

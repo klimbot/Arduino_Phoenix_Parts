@@ -1,7 +1,11 @@
 #ifndef TEST_POSES
 #define TEST_POSES
 
-#include <avr/pgmspace.h>
+#ifdef ESP32
+  #include <pgmspace.h>
+#elif __AVR__
+  #include <avr/pgmspace.h>
+#endif
 
 PROGMEM prog_uint16_t R4[] = {18, 512, 511, 711, 595, 300, 899, 510, 510, 712, 596, 300, 900, 511, 510, 712, 800, 300, 970};
 PROGMEM prog_uint16_t R5[] = {18, 512, 511, 711, 312, 201, 712, 509, 510, 712, 312, 201, 712, 511, 510, 711, 799, 207, 967};
