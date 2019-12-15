@@ -54,24 +54,24 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: "[Ubuntu] Install dependencies"
-    - shell: bash
+    # - shell: bash
       run: |
         sudo apt-get update
         sudo apt-get install curl python git
         pip install pyserial
     - name: "[Arduino] Download Arduino ${{ matrix.arduino }} portable version"
-    - shell: bash
+    # - shell: bash
       run: curl -O https://downloads.arduino.cc/arduino-${{ matrix.arduino }}-linux64.tar.xz
     - name: "[Arduino] Unpack the contents of the Arduino package"
-    - shell: bash
+    # - shell: bash
       run: tar xvfJ arduino-${{ matrix.arduino }}-linux64.tar.xz
     - name: "[Arduino] Install Arduino boards required"
-    - shell: bash
+    # - shell: bash
       run: |
         ${PWD}/arduino-${{ matrix.arduino }}/arduino --pref "boardsmanager.additional.urls=https://dl.espressif.com/dl/package_esp32_index.json" --save-prefs
         ${PWD}/arduino-${{ matrix.arduino }}/arduino --install-boards esp32:esp32
     - name: "[Phoenix] Set up the Phoenix library"
-    - shell: bash
+    # - shell: bash
       run: |
         mv Phoenix_* arduino-${{ matrix.arduino }}/libraries/
         mv ServoEx arduino-${{ matrix.arduino }}/libraries/
@@ -79,27 +79,27 @@ jobs:
         mv Phoenix/Phoenix.h arduino-${{ matrix.arduino }}/libraries/Phoenix/
         mv Phoenix/Phoenix_Code.h arduino-${{ matrix.arduino }}/libraries/Phoenix/
     - name: "[Library] Install M5StickC Library"
-    - shell: bash
+    # - shell: bash
       run: git clone https://github.com/m5stack/M5StickC.git arduino-${{ matrix.arduino }}/libraries/M5StickC
     - name: "[Library] Install ESPSoftwareSerial"
-    - shell: bash
+    # - shell: bash
       run: git clone https://github.com/plerup/espsoftwareserial.git arduino-${{ matrix.arduino }}/libraries/espsoftwareserial
     - name: "[Library] Install ESP32 PS3 Library"
-    - shell: bash
+    # - shell: bash
       run: git clone --branch develop https://github.com/jvpernis/esp32-ps3.git arduino-${{ matrix.arduino }}/libraries/esp32-ps3
     - name: "[Library] Install PS2 Contoller Library"
-    - shell: bash
+    # - shell: bash
       run: |
         git clone https://github.com/madsci1016/Arduino-PS2X.git
         mv Arduino-PS2X/* .
         rm -r Arduino-PS2X
     - name: "[Library] Install Arbotix AX12/AX18 Libraries"
-    - shell: bash
+    # - shell: bash
       run: |
         git clone --branch arduino-1-6 https://github.com/KurtE/arbotix.git
         mv arbotix/libraries/* .
         rm -rf arbotix/
     - name: "[Testing] Compile project"
-    - shell: bash
+    # - shell: bash
       run: |
         ${PWD}/arduino-${{ matrix.arduino }}/arduino --board ${{ matrix.board }} --verify ${{ matrix.sketch }}
