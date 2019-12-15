@@ -90,13 +90,14 @@ jobs:
     - name: "[Library] Install PS2 Contoller Library"
     # - shell: bash
       run: |
-        git clone https://github.com/madsci1016/Arduino-PS2X.git
+        git clone https://github.com/madsci1016/Arduino-PS2X.git arduino-${{ matrix.arduino }}/libraries/Arduino-PS2X
+        ls -la
         mv Arduino-PS2X/* .
         rm -r Arduino-PS2X
     - name: "[Library] Install Arbotix AX12/AX18 Libraries"
     # - shell: bash
       run: |
-        git clone --branch arduino-1-6 https://github.com/KurtE/arbotix.git
+        git clone --branch arduino-1-6 https://github.com/KurtE/arbotix.git arduino-${{ matrix.arduino }}/libraries/arbotix
         mv arbotix/libraries/* .
         rm -rf arbotix/
     - name: "[Testing] Compile project"
