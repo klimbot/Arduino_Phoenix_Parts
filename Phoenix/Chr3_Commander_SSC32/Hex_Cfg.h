@@ -28,16 +28,23 @@
 
 
 #ifdef __AVR__
-#if defined(UBRR1H)
-#define SSCSerial         Serial1
-#define XBeeSerial        Serial3 //Serial2
-#else
-#define XBeeSerial        Serial
-#define DontAllowDebug
-#endif
+  #if defined(UBRR2H)
+    #define SSCSerial         Serial1
+    #define XBeeSerial        Serial3 //Serial2
+  #else
+    #define SSCSerial         Serial1
+    #define XBeeSerial        Serial
+    #define DontAllowDebug
+  #endif
+#elif defined(ESP32)
+  #define SSCSerial           Serial2
+  #define XBeeSerial          Serial
+  #define DontAllowDebug
+  #define min _min
+  #define max _max
 #else  // For My Pic32 Mega shield...
-#define SSCSerial         Serial1
-#define XBeeSerial        Serial3
+  #define SSCSerial           Serial1
+  #define XBeeSerial          Serial3
 #endif
 
 //==================================================================================================================================
@@ -356,5 +363,3 @@ extern const byte g_abHexMaxBodyY[] PROGMEM;
 #define cTarsFactorC	50	//4DOF ONLY
 
 #endif CFG_HEX_H
-
-
