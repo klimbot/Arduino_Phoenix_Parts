@@ -86,7 +86,9 @@ jobs:
         git clone --branch arduino-1-6 https://github.com/KurtE/arbotix.git
         mv arbotix/libraries/* .
         rm -rf arbotix/
+        $PWD
         ls -la
+        ls -la PS2X_lib/
       shell: bash
     - name: Compile project
       run: |
