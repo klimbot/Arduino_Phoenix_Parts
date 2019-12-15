@@ -45,9 +45,9 @@ jobs:
           - arduino:avr:leonardo
           - arduino:avr:nano
         exclude:
-          - sketch: Phoenix/AliPhoenix_PS3_Maestro_M5StickC/AliPhoenix_PS3_Maestro_M5StickC
+          - sketch: Phoenix/AliPhoenix_PS3_Maestro_M5StickC/AliPhoenix_PS3_Maestro_M5StickC.ino
             board: arduino:avr:leonardo
-          - sketch: Phoenix/AliPhoenix_PS3_Maestro_M5StickC/AliPhoenix_PS3_Maestro_M5StickC
+          - sketch: Phoenix/AliPhoenix_PS3_Maestro_M5StickC/AliPhoenix_PS3_Maestro_M5StickC.ino
             board: arduino:avr:nano
     runs-on: ubuntu-latest
     steps:
