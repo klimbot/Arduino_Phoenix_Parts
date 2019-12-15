@@ -82,7 +82,6 @@ jobs:
     - name: "[Library] Install PS2 Contoller Library"
       run: |
         git clone https://github.com/madsci1016/Arduino-PS2X.git arduino-${{ matrix.arduino }}/libraries/Arduino-PS2X
-        ls -la
         mv arduino-${{ matrix.arduino }}/libraries/Arduino-PS2X/PS2X_lib arduino-${{ matrix.arduino }}/libraries/
         rm -rf arduino-${{ matrix.arduino }}/libraries/Arduino-PS2X
     - name: "[Library] Install Arbotix AX12/AX18 Libraries"
