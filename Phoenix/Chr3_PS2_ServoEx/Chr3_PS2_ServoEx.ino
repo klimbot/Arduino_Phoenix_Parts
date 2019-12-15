@@ -22,19 +22,14 @@
 //=============================================================================
 
 #define DEFINE_HEX_GLOBALS
-#if ARDUINO>99
 #include <Arduino.h>
-#else
-#endif
 #include <Wire.h>
 #include <EEPROM.h>
 #include <PS2X_lib.h>
 
-#include <I2CEEProm.h>
 #include <ServoEx.h>
 #include "Hex_Cfg.h"
 #include <Phoenix.h>
 #include <Phoenix_Input_PS2.h>
 #include <phoenix_driver_ServoEx.h>
 #include <Phoenix_Code.h>
-
