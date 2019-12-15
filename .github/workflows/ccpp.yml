@@ -26,7 +26,7 @@ jobs:
           - Phoenix/AliPhoenix_PS3_Maestro_M5StickC/AliPhoenix_PS3_Maestro_M5StickC.ino
           - Phoenix/AliPhoenix_Serial_Maestro/AliPhoenix_Serial_Maestro.ino
           - Phoenix/Chr3_Commander_SSC32/Chr3_Commander_SSC32.ino
-          - Phoenix/Chr3_PS2_Orion/Chr3_PS2_Orion.ino
+          # - Phoenix/Chr3_PS2_Orion/Chr3_PS2_Orion.ino   # Can't find Orion library
           - Phoenix/Chr3_PS2_ServoEx/Chr3_PS2_ServoEx.ino
           - Phoenix/Chr3_RC_SSC32/Chr3_RC_SSC32.ino
           - Phoenix/LSQuadA_PS2_SSC32/LSQuadA_PS2_SSC32.ino
