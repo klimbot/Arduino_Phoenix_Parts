@@ -49,6 +49,8 @@ jobs:
             board: arduino:avr:leonardo
           - sketch: Phoenix/AliPhoenix_PS3_Maestro_M5StickC/AliPhoenix_PS3_Maestro_M5StickC.ino
             board: arduino:avr:nano
+          - sketch: Phoenix/Phoenix/Chr3_PS2_ServoEx/Chr3_PS2_ServoEx/Phoenix/Chr3_PS2_ServoEx/Chr3_PS2_ServoEx.ino
+            board: esp32:esp32:m5stick-c
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
