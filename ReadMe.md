@@ -54,7 +54,7 @@ c:\users\kurt\My Documents\Arduino\libraries.
 In the Phoenix library there are several examples of configurations.  
 
 Once these directories are installed, you can simply go to the file menu, Choose the Examples menu item, then
-in this sub-menu there should be a menu item Phoenix, which when chosen, should give you several configurations…
+in this sub-menu there should be a menu item Phoenix, which when chosen, should give you several configurationsï¿½
 
 Once you load a configuration that is either your configuration or the one closest to it, you can then save this
 sketch into your own sketchbook and make any modifications that are necessary or desired to make your robot
@@ -88,7 +88,7 @@ work on Arduino Mega class Arduinos.
 
 ServoEx - This is my own enhanced version of the Arduino Servo library that adds the ability for timed moves.
 
-Maestro - Implementation for the Pololu Maestro serial servo driver
+Maestro - Implementation for the Pololu Maestro serial servo driver based off a combination of ServoEx and the Bioloid controller.
 
 
 Input Classes 
@@ -104,6 +104,8 @@ Phoenix_Input_DIYXbee - Support for our DIY XBee remote control.  Only a few of 
 Phoenix_Input_PS2 - Support for the Lynxmotion PS2 (as well as several others).  Used with most of the Lynxmotion
 robots.  Note: You also need to install the Bill Porter Arduino PS2 library. You can get this from the Lynxmotion
 github or several other places
+
+Phoenix_Input_PS3 - Only supports the ESP32 boards. Very similar in use to the PS2 input library but it uses the jvpernis [esp32-ps3 libray](https://github.com/jvpernis/esp32-ps3.git)
 
 Phoenix_Input_RC - A first pass at RC input. I believe this one was for my Hitec 6...
 
@@ -241,7 +243,7 @@ Kare Halvorsen (aka Zenta) -  The Lynxmotion Phoenix was based on the original P
 him.  In addition a lot of the software was based off of his earlier Excel spreadsheet (PEP).  More details up on his 
 Project page (http://www.lynxmotion.com/images/html/proj098.htm).
 
-Me - I later ported the code to C/C++ and the Arduino environment and with the help of Kåre and Jeroen hopefully 
+Me - I later ported the code to C/C++ and the Arduino environment and with the help of Kï¿½re and Jeroen hopefully 
 reduced the number of bugs I introduced as part of this port.   
 
 Michael E. Ferguson (lnxfergy up on Trossen) - Arbotix Commander, Ax12.
