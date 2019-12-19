@@ -20,10 +20,7 @@
 //=============================================================================
 
 #define DEFINE_HEX_GLOBALS
-#if ARDUINO>99
 #include <Arduino.h>
-#else
-#endif
 #include <EEPROM.h>
 #include <ax12.h>
 #include <BioloidEx.h>
@@ -34,4 +31,3 @@
 #include <Phoenix_Input_Commander.h>
 #include <Phoenix_Driver_AX12.h>
 #include <Phoenix_Code.h>
-
