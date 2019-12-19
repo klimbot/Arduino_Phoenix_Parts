@@ -56,7 +56,9 @@ jobs:
           - sketch: Phoenix/Chr3_RC_SSC32/Chr3_RC_SSC32.ino
             board: arduino:avr:leonardo # RC input library does not support the Leonardo
           - sketch: Phoenix/PhantomX_Commander_AX12/PhantomX_Commander_AX12.ino
-            board: [esp32:esp32:m5stick-c, arduino:avr:nano]
+            board:
+              - esp32:esp32:m5stick-c
+              - arduino:avr:nano
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
