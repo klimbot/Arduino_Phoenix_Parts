@@ -30,7 +30,7 @@ jobs:
           - Phoenix/Chr3_PS2_ServoEx/Chr3_PS2_ServoEx.ino
           - Phoenix/Chr3_RC_SSC32/Chr3_RC_SSC32.ino
           - Phoenix/LSQuadA_PS2_SSC32/LSQuadA_PS2_SSC32.ino
-          - Phoenix/Mantis_BMPS2_Orion_Stock/Mantis_BMPS2_Orion_Stock.ino
+          # - Phoenix/Mantis_BMPS2_Orion_Stock/Mantis_BMPS2_Orion_Stock.ino     # Can't find Orion library
           - Phoenix/PhantomX_Commander_AX12/PhantomX_Commander_AX12.ino
           - Phoenix/PhantomX_Commander_AX12_Stock/PhantomX_Commander_AX12_Stock.ino
           - Phoenix/PhantomX_DIYXbee_AX12/PhantomX_DIYXbee_AX12.ino
@@ -46,54 +46,54 @@ jobs:
           - arduino:avr:nano
         exclude:
           - sketch: Phoenix/AliPhoenix_PS3_Maestro_M5StickC/AliPhoenix_PS3_Maestro_M5StickC.ino
-            board: arduino:avr:leonardo     # AVR boards don't have bluetooth
+            board: arduino:avr:leonardo # AVR boards don't have bluetooth
           - sketch: Phoenix/AliPhoenix_PS3_Maestro_M5StickC/AliPhoenix_PS3_Maestro_M5StickC.ino
-            board: arduino:avr:nano         # AVR boards don't have bluetooth
+            board: arduino:avr:nano # AVR boards don't have bluetooth
           - sketch: Phoenix/Chr3_PS2_ServoEx/Chr3_PS2_ServoEx.ino
-            board: esp32:esp32:m5stick-c    # M5StickC doesn't have enough pins to handle all servos
+            board: esp32:esp32:m5stick-c # M5StickC doesn't have enough pins to handle all servos
           - sketch: Phoenix/Chr3_RC_SSC32/Chr3_RC_SSC32.ino
-            board: esp32:esp32:m5stick-c    # M5StickC doesn't have enough pins to handle RC input
+            board: esp32:esp32:m5stick-c # M5StickC doesn't have enough pins to handle RC input
           - sketch: Phoenix/Chr3_RC_SSC32/Chr3_RC_SSC32.ino
-            board: arduino:avr:leonardo     # RC input library does not support the Leonardo
+            board: arduino:avr:leonardo # RC input library does not support the Leonardo
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: "[Ubuntu] Install dependencies"
-      run: |
-        sudo apt-get update
-        sudo apt-get install curl python git
-        pip install pyserial
-    - name: "[Arduino] Download Arduino ${{ matrix.arduino }} portable version"
-      run: curl -O https://downloads.arduino.cc/arduino-${{ matrix.arduino }}-linux64.tar.xz
-    - name: "[Arduino] Unpack the contents of the Arduino package"
-      run: tar xvfJ arduino-${{ matrix.arduino }}-linux64.tar.xz
-    - name: "[Arduino] Install Arduino boards required"
-      run: |
-        ${PWD}/arduino-${{ matrix.arduino }}/arduino --pref "boardsmanager.additional.urls=https://dl.espressif.com/dl/package_esp32_index.json" --save-prefs
-        ${PWD}/arduino-${{ matrix.arduino }}/arduino --install-boards esp32:esp32
-    - name: "[Phoenix] Set up the Phoenix library"
-      run: |
-        mv Phoenix_* arduino-${{ matrix.arduino }}/libraries/
-        mv ServoEx arduino-${{ matrix.arduino }}/libraries/
-        mkdir arduino-${{ matrix.arduino }}/libraries/Phoenix
-        mv Phoenix/Phoenix.h arduino-${{ matrix.arduino }}/libraries/Phoenix/
-        mv Phoenix/Phoenix_Code.h arduino-${{ matrix.arduino }}/libraries/Phoenix/
-    - name: "[Library] Install M5StickC Library"
-      run: git clone https://github.com/m5stack/M5StickC.git arduino-${{ matrix.arduino }}/libraries/M5StickC
-    - name: "[Library] Install ESPSoftwareSerial"
-      run: git clone https://github.com/plerup/espsoftwareserial.git arduino-${{ matrix.arduino }}/libraries/espsoftwareserial
-    - name: "[Library] Install ESP32 PS3 Library"
-      run: git clone --branch develop https://github.com/jvpernis/esp32-ps3.git arduino-${{ matrix.arduino }}/libraries/esp32-ps3
-    - name: "[Library] Install PS2 Contoller Library"
-      run: |
-        git clone https://github.com/madsci1016/Arduino-PS2X.git arduino-${{ matrix.arduino }}/libraries/Arduino-PS2X
-        mv arduino-${{ matrix.arduino }}/libraries/Arduino-PS2X/PS2X_lib arduino-${{ matrix.arduino }}/libraries/
-        rm -rf arduino-${{ matrix.arduino }}/libraries/Arduino-PS2X
-    - name: "[Library] Install Arbotix AX12/AX18 Libraries"
-      run: |
-        git clone --branch arduino-1-6 https://github.com/KurtE/arbotix.git arduino-${{ matrix.arduino }}/libraries/arbotix
-        mv arduino-${{ matrix.arduino }}/libraries/arbotix/libraries/* arduino-${{ matrix.arduino }}/libraries/
-        rm -rf arduino-${{ matrix.arduino }}/libraries/arbotix
-    - name: "[Testing] Compile project"
-      run: |
-        ${PWD}/arduino-${{ matrix.arduino }}/arduino --board ${{ matrix.board }} --verify ${{ matrix.sketch }}
+      - uses: actions/checkout@v1
+      - name: "[Ubuntu] Install dependencies"
+        run: |
+          sudo apt-get update
+          sudo apt-get install curl python git
+          pip install pyserial
+      - name: "[Arduino] Download Arduino ${{ matrix.arduino }} portable version"
+        run: curl -O https://downloads.arduino.cc/arduino-${{ matrix.arduino }}-linux64.tar.xz
+      - name: "[Arduino] Unpack the contents of the Arduino package"
+        run: tar xvfJ arduino-${{ matrix.arduino }}-linux64.tar.xz
+      - name: "[Arduino] Install Arduino boards required"
+        run: |
+          ${PWD}/arduino-${{ matrix.arduino }}/arduino --pref "boardsmanager.additional.urls=https://dl.espressif.com/dl/package_esp32_index.json" --save-prefs
+          ${PWD}/arduino-${{ matrix.arduino }}/arduino --install-boards esp32:esp32
+      - name: "[Phoenix] Set up the Phoenix library"
+        run: |
+          mv Phoenix_* arduino-${{ matrix.arduino }}/libraries/
+          mv ServoEx arduino-${{ matrix.arduino }}/libraries/
+          mkdir arduino-${{ matrix.arduino }}/libraries/Phoenix
+          mv Phoenix/Phoenix.h arduino-${{ matrix.arduino }}/libraries/Phoenix/
+          mv Phoenix/Phoenix_Code.h arduino-${{ matrix.arduino }}/libraries/Phoenix/
+      - name: "[Library] Install M5StickC Library"
+        run: git clone https://github.com/m5stack/M5StickC.git arduino-${{ matrix.arduino }}/libraries/M5StickC
+      - name: "[Library] Install ESPSoftwareSerial"
+        run: git clone https://github.com/plerup/espsoftwareserial.git arduino-${{ matrix.arduino }}/libraries/espsoftwareserial
+      - name: "[Library] Install ESP32 PS3 Library"
+        run: git clone --branch develop https://github.com/jvpernis/esp32-ps3.git arduino-${{ matrix.arduino }}/libraries/esp32-ps3
+      - name: "[Library] Install PS2 Contoller Library"
+        run: |
+          git clone https://github.com/madsci1016/Arduino-PS2X.git arduino-${{ matrix.arduino }}/libraries/Arduino-PS2X
+          mv arduino-${{ matrix.arduino }}/libraries/Arduino-PS2X/PS2X_lib arduino-${{ matrix.arduino }}/libraries/
+          rm -rf arduino-${{ matrix.arduino }}/libraries/Arduino-PS2X
+      - name: "[Library] Install Arbotix AX12/AX18 Libraries"
+        run: |
+          git clone --branch arduino-1-6 https://github.com/KurtE/arbotix.git arduino-${{ matrix.arduino }}/libraries/arbotix
+          mv arduino-${{ matrix.arduino }}/libraries/arbotix/libraries/* arduino-${{ matrix.arduino }}/libraries/
+          rm -rf arduino-${{ matrix.arduino }}/libraries/arbotix
+      - name: "[Testing] Compile project"
+        run: |
+          ${PWD}/arduino-${{ matrix.arduino }}/arduino --board ${{ matrix.board }} --verify ${{ matrix.sketch }}
