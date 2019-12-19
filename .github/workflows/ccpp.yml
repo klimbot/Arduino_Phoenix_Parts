@@ -57,6 +57,7 @@ jobs:
             board: arduino:avr:leonardo # RC input library does not support the Leonardo
           - sketch: Phoenix/PhantomX_Commander_AX12/PhantomX_Commander_AX12.ino
             board: esp32:esp32:m5stick-c
+          - sketch: Phoenix/PhantomX_Commander_AX12/PhantomX_Commander_AX12.ino
             board: arduino:avr:nano
     runs-on: ubuntu-latest
     steps:
