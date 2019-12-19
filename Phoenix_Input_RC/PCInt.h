@@ -1,12 +1,8 @@
 // This is a completely mucked up version of the PinChangeInt.h library...
 #ifndef PCInt_h
 #define	PCInt_h
-#if defined(ARDUINO) && ARDUINO >= 100
 #include <Arduino.h>
-#else
-#include <WProgram.h>
-#include <pins_arduino.h>
-#endif
+
 /*
  * an extension to the interrupt support for arduino.
  * add pin change interrupts to the external interrupts, giving a way

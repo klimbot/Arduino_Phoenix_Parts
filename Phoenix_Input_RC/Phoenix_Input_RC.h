@@ -32,23 +32,23 @@ enum {RCC_RLR=0, RCC_RUD, RCC_LUD, RCC_LLR, RCC_SWITCH, RCC_KNOB};
 //=============================================================================
 
 // Define an instance of the Input Controller...
-InputController   g_InputController;       // Our Input controller 
-word              g_awRCTimes[RCPIN_COUNT] = {0,0,0, 0, 0, 0};                // to the reciver's channels in the order listed here
-static unsigned long g_alRisingEdge[RCPIN_COUNT];
-uint8_t           g_bRCValidBits;
-boolean           g_fRCDataChanged = false;
-boolean           _fSwitchOn;
-boolean          _fSwitchOnPrev;
+InputController       g_InputController;                              // Our Input controller 
+word                  g_awRCTimes[RCPIN_COUNT] = {0,0,0, 0, 0, 0};    // to the reciver's channels in the order listed here
+static unsigned long  g_alRisingEdge[RCPIN_COUNT];
+uint8_t               g_bRCValidBits;
+boolean               g_fRCDataChanged = false;
+boolean               _fSwitchOn;
+boolean               _fSwitchOnPrev;
 
 
-static short      g_BodyYOffset; 
-static short      g_bRCErrorCnt;
-static short       g_BodyYShift;
-static byte        ControlMode;
-static bool        DoubleHeightOn;
-static bool        DoubleTravelOn;
-static bool        WalkMethod;
-byte            GPSeq;             //Number of the sequence
+static short          g_BodyYOffset; 
+static short          g_bRCErrorCnt;
+static short          g_BodyYShift;
+static byte           ControlMode;
+static bool           DoubleHeightOn;
+static bool           DoubleTravelOn;
+static bool           WalkMethod;
+byte                  GPSeq;             //Number of the sequence
 
 // some external or forward function references.
 extern void PinChanged(uint8_t iRCChannel, uint8_t bPinState, unsigned long ulTime);        // one of our pins changed state. 
@@ -80,8 +80,6 @@ void InputController::Init(void)
         digitalWrite(pin, HIGH); //use the internal pullup resistor
         PCattachInterrupt(pin, PinChanged, i, CHANGE); // attach a PinChange Interrupt to our first pin
     }
-
-
 }
 
 //==============================================================================
@@ -100,129 +98,146 @@ void InputController::AllowControllerInterrupts(boolean fAllow)
 //==============================================================================
 void InputController::ControlInput(void)
 {
-    // See if we have valid data...
-    // Will start of just trying out seeing if we have a complete set of data...
+  // See if we have valid data...
+  // Will start of just trying out seeing if we have a complete set of data...
 #ifdef DEBUG_RC    
-    if (g_fRCDataChanged) {
-        Serial.print(g_bRCValidBits, HEX);
-        Serial.print(": ");
-        for (int i=0; i < RCPIN_COUNT; i++) {
-            Serial.print(g_awRCTimes[i], DEC);
-            Serial.print(" ");
-        }
-        Serial.println();
-        g_fRCDataChanged = false;
-    }    
-#endif    
+  if (g_fRCDataChanged) {
+    Serial.print(g_bRCValidBits, HEX);
+    Serial.print(": ");
     
-    if (g_bRCValidBits == RC_VALID_PIN_MASK) {
-        // Have valid data so make sure the robot is on...
-        g_bRCErrorCnt = 0;    // clear out error count...
-        
-        if (!g_InControlState.fRobotOn) {
-            g_InControlState.fRobotOn = 1;
-            _fSwitchOn = (g_awRCTimes[RCC_SWITCH] > 1500);
-        }
+    for (int i=0; i < RCPIN_COUNT; i++) {
+      Serial.print(g_awRCTimes[i], DEC);
+      Serial.print(" ");
+    }
 
-	if (g_awRCTimes[RCC_KNOB] <  1300) {
-	  if (ControlMode != WALKMODE) {
-            MSound(1, 50, 2000);  //sound SOUND_PIN, [50\4000]
-	    ControlMode = WALKMODE;
-          }
-        } else if (g_awRCTimes[RCC_KNOB] < 1500) {
-          if (ControlMode != TRANSLATEMODE) {
-            MSound(1, 50, 2000);  //sound SOUND_PIN, [50\4000]
-	    ControlMode = TRANSLATEMODE;
-          }
-        } else if (g_awRCTimes[RCC_KNOB] < 1700) {
-	  if (ControlMode != ROTATEMODE) {
-            MSound(1, 50, 2000);  //sound SOUND_PIN, [50\4000]
-	    ControlMode = ROTATEMODE;
-          }
-        } else {
-	  if (ControlMode != SINGLELEGMODE) {
-	    ControlMode=SINGLELEGMODE;
-            MSound(1, 50, 2000);  //sound SOUND_PIN, [50\4000]
-	    g_InControlState.SelectedLeg = 0;
-          }
-        }
-        
-        _fSwitchOnPrev = _fSwitchOn;
-        _fSwitchOn = (g_awRCTimes[RCC_SWITCH] > 1500);
+    Serial.println();
+    g_fRCDataChanged = false;
+  }
+#endif    
 
-        if (_fSwitchOn != _fSwitchOnPrev) {           // Select Button Test
-            if (ControlMode == WALKMODE) {
-                //Switch gates
-                g_InControlState.GaitType = g_InControlState.GaitType+1;                    // Go to the next gait...
-                if (g_InControlState.GaitType<NUM_GAITS) {                 // Make sure we did not exceed number of gaits...
-                    MSound(1, 50, 2000);  //sound SOUND_PIN, [50\4000]
-                } else {
-                    MSound (2, 50, 2000, 50, 2250); 
-                    g_InControlState.GaitType = 0;
-                }
-                GaitSelect();
-            } else if (ControlMode == SINGLELEGMODE) {
-                MSound (1, 50, 2000);  //sound SOUND_PIN, [50\4000]
-                if (g_InControlState.SelectedLeg<5)
-                    g_InControlState.SelectedLeg = g_InControlState.SelectedLeg+1;
-                else
-                    g_InControlState.SelectedLeg=0;
-            }
-      }
-      
-      // Body Height...
-      g_InControlState.BodyPos.y = (max(g_awRCTimes[RCC_LUD], 1100)-1100) / 6;
+  if (g_bRCValidBits == RC_VALID_PIN_MASK) {
+    // Have valid data so make sure the robot is on...
+    g_bRCErrorCnt = 0;    // clear out error count...
 
-      if (ControlMode == WALKMODE) {
-          g_InControlState.TravelLength.x = -(g_awRCTimes[RCC_RLR] - 1500) / 3;
-          g_InControlState.TravelLength.z = -(g_awRCTimes[RCC_RUD] - 1500) / 3;	
-          g_InControlState.TravelLength.y = -(g_awRCTimes[RCC_LLR] - 1500)/10;
-      }
-      //Body move	
-      else if (ControlMode == TRANSLATEMODE) {
-          g_InControlState.BodyPos.x = (g_awRCTimes[RCC_RLR]-1500)/6;
-	  g_InControlState.BodyPos.z = (g_awRCTimes[RCC_RUD]-1500)/6;
-	  g_InControlState.BodyRot1.y = (g_awRCTimes[RCC_LLR]-1500)/2;
-      }
-			
-      // Body rotate	
-      else if (ControlMode == ROTATEMODE) {
-          g_InControlState.BodyRot1.x = (g_awRCTimes[RCC_RUD]-1500)/2;
-	  g_InControlState.BodyRot1.y = (g_awRCTimes[RCC_LLR]-1500)/2;
-	  g_InControlState.BodyRot1.z = -(g_awRCTimes[RCC_RLR]-1500)/2;
-      }
-      //Single Leg Mode
-      else if (ControlMode == SINGLELEGMODE) {
-          g_InControlState.SLLeg.x = (g_awRCTimes[RCC_RLR]-1500) / 3;
-	  g_InControlState.SLLeg.z = -(g_awRCTimes[RCC_RUD]-1500) / 3;
-	  g_InControlState.SLLeg.y = -(g_awRCTimes[RCC_LLR]-1500)/ 10;
-      }
+    if (!g_InControlState.fRobotOn) {
+      g_InControlState.fRobotOn = 1;
+      _fSwitchOn = (g_awRCTimes[RCC_SWITCH] > 1500);
+    }
 
-      //Calculate walking time delay
-      g_InControlState.InputTimeDelay = 128 - max(max(abs((g_awRCTimes[RCC_RLR]-1500)/6),abs((g_awRCTimes[RCC_RUD]-1500)/6)), 
-            abs((g_awRCTimes[RCC_LLR]-1500)/6));
-  
-    } else {
-      // We lost contact with RC... Allow a couple of errors, then turn robot off...
-      if (g_bRCErrorCnt < MAXRCERRORCNT)
-          g_bRCErrorCnt++;    // Increment the error count and if to many errors, turn off the robot.
-      else if (g_InControlState.fRobotOn) {
-         //Turn off
-          g_InControlState.BodyPos.x = 0;
-          g_InControlState.BodyPos.y = 0;
-          g_InControlState.BodyPos.z = 0;
-          g_InControlState.BodyRot1.x = 0;
-          g_InControlState.BodyRot1.y = 0;
-          g_InControlState.BodyRot1.z = 0;
-          g_InControlState.TravelLength.x = 0;
-          g_InControlState.TravelLength.z = 0;
-          g_InControlState.TravelLength.y = 0;
-          g_BodyYOffset = 0;
-          g_BodyYShift = 0;
-          g_InControlState.SelectedLeg = 255;
-          g_InControlState.fRobotOn = 0;
+	  if (g_awRCTimes[RCC_KNOB] <  1300) {
+	    if (ControlMode != WALKMODE) {
+        MSound(1, 50, 2000);  //sound SOUND_PIN, [50\4000]
+	      ControlMode = WALKMODE;
+      }
+    } 
+    else if (g_awRCTimes[RCC_KNOB] < 1500) {
+      if (ControlMode != TRANSLATEMODE) {
+        MSound(1, 50, 2000);  //sound SOUND_PIN, [50\4000]
+	      ControlMode = TRANSLATEMODE;
       }
     }
+    else if (g_awRCTimes[RCC_KNOB] < 1700) {
+	    if (ControlMode != ROTATEMODE) {
+        MSound(1, 50, 2000);  //sound SOUND_PIN, [50\4000]
+	      ControlMode = ROTATEMODE;
+      }
+    }
+    else {
+#ifdef OPT_SINGLELEG
+      if (ControlMode != SINGLELEGMODE) {
+	      ControlMode=SINGLELEGMODE;
+        MSound(1, 50, 2000);  //sound SOUND_PIN, [50\4000]
+	       g_InControlState.SelectedLeg = 0;
+      }
+#endif
+    }
+
+    _fSwitchOnPrev = _fSwitchOn;
+    _fSwitchOn = (g_awRCTimes[RCC_SWITCH] > 1500);
+
+    if (_fSwitchOn != _fSwitchOnPrev) {                               // Select Button Test
+      if (ControlMode == WALKMODE) {
+        //Switch gates
+        g_InControlState.GaitType = g_InControlState.GaitType+1;      // Go to the next gait...
+        if (g_InControlState.GaitType<NUM_GAITS) {                    // Make sure we did not exceed number of gaits...
+          MSound(1, 50, 2000);                                        //sound SOUND_PIN, [50\4000]
+        } 
+        else {
+          MSound (2, 50, 2000, 50, 2250); 
+          g_InControlState.GaitType = 0;
+        }
+        
+        GaitSelect();
+      }
+#ifdef OPT_SINGLELEG
+      else if (ControlMode == SINGLELEGMODE) {
+        MSound (1, 50, 2000);                                         //sound SOUND_PIN, [50\4000]
+        if (g_InControlState.SelectedLeg<5)
+          g_InControlState.SelectedLeg = g_InControlState.SelectedLeg+1;
+        else
+          g_InControlState.SelectedLeg=0;
+      }
+#endif
+    }
+    
+    // Body Height...
+    g_InControlState.BodyPos.y = (max(g_awRCTimes[RCC_LUD], 1100)-1100) / 6;
+
+    if (ControlMode == WALKMODE) {
+      g_InControlState.TravelLength.x = -(g_awRCTimes[RCC_RLR] - 1500) / 3;
+      g_InControlState.TravelLength.z = -(g_awRCTimes[RCC_RUD] - 1500) / 3;	
+      g_InControlState.TravelLength.y = -(g_awRCTimes[RCC_LLR] - 1500)/10;
+    }
+    //Body move	
+    else if (ControlMode == TRANSLATEMODE) {
+      g_InControlState.BodyPos.x = (g_awRCTimes[RCC_RLR]-1500)/6;
+      g_InControlState.BodyPos.z = (g_awRCTimes[RCC_RUD]-1500)/6;
+      g_InControlState.BodyRot1.y = (g_awRCTimes[RCC_LLR]-1500)/2;
+    }
+
+    // Body rotate	
+    else if (ControlMode == ROTATEMODE) {
+      g_InControlState.BodyRot1.x = (g_awRCTimes[RCC_RUD]-1500)/2;
+      g_InControlState.BodyRot1.y = (g_awRCTimes[RCC_LLR]-1500)/2;
+      g_InControlState.BodyRot1.z = -(g_awRCTimes[RCC_RLR]-1500)/2;
+    }
+#ifdef OPT_SINGLELEG
+    //Single Leg Mode
+    else if (ControlMode == SINGLELEGMODE) {
+      g_InControlState.SLLeg.x = (g_awRCTimes[RCC_RLR]-1500) / 3;
+      g_InControlState.SLLeg.z = -(g_awRCTimes[RCC_RUD]-1500) / 3;
+      g_InControlState.SLLeg.y = -(g_awRCTimes[RCC_LLR]-1500)/ 10;
+    }
+#endif
+
+    //Calculate walking time delay
+    g_InControlState.InputTimeDelay = 128 - max(max(abs((g_awRCTimes[RCC_RLR]-1500)/6),abs((g_awRCTimes[RCC_RUD]-1500)/6)), 
+    abs((g_awRCTimes[RCC_LLR]-1500)/6));
+
+  }
+  else {
+    // We lost contact with RC... Allow a couple of errors, then turn robot off...
+    if (g_bRCErrorCnt < MAXRCERRORCNT)
+      g_bRCErrorCnt++;    // Increment the error count and if to many errors, turn off the robot.
+    else if (g_InControlState.fRobotOn) {
+      //Turn off
+      g_InControlState.BodyPos.x = 0;
+      g_InControlState.BodyPos.y = 0;
+      g_InControlState.BodyPos.z = 0;
+      g_InControlState.BodyRot1.x = 0;
+      g_InControlState.BodyRot1.y = 0;
+      g_InControlState.BodyRot1.z = 0;
+      g_InControlState.TravelLength.x = 0;
+      g_InControlState.TravelLength.z = 0;
+      g_InControlState.TravelLength.y = 0;
+      g_BodyYOffset = 0;
+      g_BodyYShift = 0;
+#ifdef OPT_SINGLELEG
+      g_InControlState.SelectedLeg = 255;
+#endif
+      g_InControlState.fRobotOn = 0;
+    }
+  }
 }
 
 

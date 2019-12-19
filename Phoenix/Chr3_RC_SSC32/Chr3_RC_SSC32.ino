@@ -24,7 +24,6 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <EEPROM.h>
-//#include <SoftwareSerial.h>
 
 #include "Hex_Cfg.h"
 #include <Phoenix.h>
