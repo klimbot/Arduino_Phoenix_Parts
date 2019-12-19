@@ -25,16 +25,22 @@
 //#define DEBUG
 
 #ifdef __AVR__
-#if defined(UBRR1H)
-#define SSCSerial         Serial1
-#define XBeeSerial        Serial3 //Serial2
+  #if defined(UBRR1H)
+    #define SSCSerial         Serial1
+    #define XBeeSerial        Serial3 //Serial2
+  #else
+    #define XBeeSerial        Serial
+    #define DontAllowDebug
+  #endif
 #else
-#define XBeeSerial        Serial
-#define DontAllowDebug
-#endif
-#else
-// For non AVR processors like Teensy assume Serial1...
-#define SSCSerial         Serial1
+  #ifdef ESP32
+    #define min _min
+    #define max _max
+    #define SSCSerial         Serial2
+  #else
+    // For non AVR processors like Teensy assume Serial1...
+    #define SSCSerial         Serial1
+  #endif
 #endif
 
 //==================================================================================================================================
@@ -288,5 +294,4 @@
 #define cTarsFactorB	60	//4DOF ONLY
 #define cTarsFactorC	50	//4DOF ONLY
 
-#endif CFG_HEX_H
-
+#endif LSQUADA_CFG_H
