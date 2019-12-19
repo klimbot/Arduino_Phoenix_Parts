@@ -46,11 +46,15 @@ jobs:
           - arduino:avr:nano
         exclude:
           - sketch: Phoenix/AliPhoenix_PS3_Maestro_M5StickC/AliPhoenix_PS3_Maestro_M5StickC.ino
-            board: arduino:avr:leonardo
+            board: arduino:avr:leonardo     # AVR boards don't have bluetooth
           - sketch: Phoenix/AliPhoenix_PS3_Maestro_M5StickC/AliPhoenix_PS3_Maestro_M5StickC.ino
-            board: arduino:avr:nano
+            board: arduino:avr:nano         # AVR boards don't have bluetooth
           - sketch: Phoenix/Chr3_PS2_ServoEx/Chr3_PS2_ServoEx.ino
-            board: esp32:esp32:m5stick-c
+            board: esp32:esp32:m5stick-c    # M5StickC doesn't have enough pins to handle all servos
+          - sketch: Phoenix/Chr3_RC_SSC32/Chr3_RC_SSC32.ino
+            board: esp32:esp32:m5stick-c    # M5StickC doesn't have enough pins to handle RC input
+          - sketch: Phoenix/Chr3_RC_SSC32/Chr3_RC_SSC32.ino
+            board: arduino:avr:leonardo     # RC input library does not support the Leonardo
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
